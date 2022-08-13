@@ -17,10 +17,11 @@ namespace CadastroUsuario.Repositories
             this.context = context;
         }
 
-        public async Task Create(Usuario usuario)
+        public async Task<Usuario> Create(Usuario usuario)
         {
            await context.Usuarios.AddAsync(usuario);
            await context.SaveChangesAsync();
+           return await context.Usuarios.FindAsync(usuario.Id);
         }
 
         public async Task Delete(Usuario usuario)

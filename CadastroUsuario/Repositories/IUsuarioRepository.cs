@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CadastroUsuario.Repositories
 {
-    interface IUsuarioRepository
+    public interface IUsuarioRepository
     {
         Task<IEnumerable<Usuario>> Get();
         Task<Usuario> Get(string id);
-        Task Create(Usuario usuario);
+        Task<Usuario> Create(Usuario usuario);
         Task Update(Usuario usuario);
         Task Delete(Usuario usuario);
 
