@@ -12,7 +12,7 @@ namespace CadastroUsuario.Repositories
         Task<Usuario> Get(string id);
         Task Create(Usuario usuario);
         Task Update(Usuario usuario);
-        Task Delete(string id);
+        Task Delete(Usuario usuario);
 
     }
 }

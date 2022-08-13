@@ -1,4 +1,5 @@
 ﻿using CadastroUsuario.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,29 +9,40 @@ namespace CadastroUsuario.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        public Task Create(Usuario usuario)
+
+        private readonly AppDbContext context;
+
+        public UsuarioRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
         }
 
-        public Task Delete(string id)
+        public async Task Create(Usuario usuario)
         {
-            throw new NotImplementedException();
+           await context.Usuarios.AddAsync(usuario);
+           await context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Usuario>> Get()
+        public async Task Delete(Usuario usuario)
         {
-            throw new NotImplementedException();
+            context.Usuarios.Remove(usuario);
+            await context.SaveChangesAsync();
         }
 
-        public Task<Usuario> Get(string id)
+        public async Task<IEnumerable<Usuario>> Get()
         {
-            throw new NotImplementedException();
+            return await context.Usuarios.ToListAsync();
         }
 
-        public Task Update(Usuario usuario)
+        public async Task<Usuario> Get(string id)
         {
-            throw new NotImplementedException();
+            return await context.Usuarios.FindAsync(id);
+        }
+
+        public async Task Update(Usuario usuario)
+        {
+            context.Entry(usuario).State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
     }
 }
