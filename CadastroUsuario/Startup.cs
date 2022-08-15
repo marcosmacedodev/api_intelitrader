@@ -1,4 +1,5 @@
 using CadastroUsuario.Model;
+using CadastroUsuario.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,7 +32,7 @@ namespace CadastroUsuario
 
             string mySqlConnection = "server=localhost;port=3306;database=mundovirtual;user=root;password=admin";
             services.AddDbContextPool<AppDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
-
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

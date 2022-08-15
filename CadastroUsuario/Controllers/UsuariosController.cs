@@ -10,7 +10,7 @@ namespace CadastroUsuario.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuariosController
+    public class UsuariosController: ControllerBase
     {
         private readonly IUsuarioRepository usuarioRepository;
         public UsuariosController(IUsuarioRepository usuarioRepository)
@@ -21,34 +21,55 @@ namespace CadastroUsuario.Controllers
         [HttpGet]
         public async Task<IEnumerable<Usuario>> Get()
         {
-            return await usuarioRepository.Get();
+            IEnumerable<Usuario> usuarios = await usuarioRepository.Get();
+
+            return usuarios;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> Get(string id)
         {
-            return await usuarioRepository.Get(id);
+            Usuario usuario = await usuarioRepository.Get(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return Ok(usuario);
+
         }
 
         [HttpPost]
         public async Task<ActionResult<Usuario>> Create([FromBody] Usuario usuario)
         {
+
             return await usuarioRepository.Create(usuario);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(string id)
+        public async Task<ActionResult<Usuario>> Update(string id, [FromBody] Usuario usuario)
         {
-            Usuario usuario = await usuarioRepository.Get(id);
-            await usuarioRepository.Update(usuario);
-            return new NoContentResult();
+
+            if (usuario.Id.Equals(id))
+            {
+                await usuarioRepository.Update(usuario);
+                return Ok(usuario);
+            }
+
+            return NoContent();
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult<Usuario>> Delete(string id)
         {
             Usuario usuario = await usuarioRepository.Get(id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+
             await usuarioRepository.Delete(usuario);
-            return new NoContentResult();
+            return Ok(usuario);
         }
     }
 }
