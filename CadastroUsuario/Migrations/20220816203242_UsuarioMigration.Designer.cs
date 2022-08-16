@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CadastroUsuario.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220815151635_UsuarioMigration")]
+    [Migration("20220816203242_UsuarioMigration")]
     partial class UsuarioMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
