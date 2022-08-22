@@ -1,0 +1,36 @@
+version: "3.8"
+
+volumes: 
+    cadastrousuariodb:
+
+networks:
+    mysqlNetwork:
+    cadastrousuarioNetwork:
+
+services:
+  mysql:
+    image: mysql
+    container_name: container_mysql
+    ports: 
+      - "3307:3306"
+    networks: 
+      - mysqlNetwork
+    volumes: 
+      - "cadastrousuariodb:/var/lib/mysql"
+    environment: 
+      - MYSQL_ROOT_PASSWORD=mysql321
+
+  api:
+    build:
+      context: .
+      dockerfile: CadastroUsuario/Dockerfile
+    container_name: container_cadastrousuario
+    ports: 
+      - "8000:80"
+    networks:
+      - cadastrousuarioNetwork
+      - mysqlNetwork
+    environment:
+      - DBHOST=mysql
+    depends_on:
+      - mysql

@@ -30,7 +30,7 @@ namespace CadastroUsuario
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string mySqlConnection = "server=localhost;port=3306;database=mundovirtual;user=root;password=admin";
+            string mySqlConnection = "server=192.168.0.2;port=3306;database=apidb;user=root;password=mysql321";
             services.AddLogging();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddDbContextPool<AppDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
@@ -38,7 +38,7 @@ namespace CadastroUsuario
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CadastroUsuario", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cadastro Usuario", Version = "v1" });
             });
         }
 

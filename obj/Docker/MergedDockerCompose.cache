@@ -1,0 +1,16 @@
+services:
+  cadastrousuario:
+    build:
+      context: C:\Users\Marcos Macedo\source\repos\CadastroUsuario
+      dockerfile: CadastroUsuario/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: cadastrousuario
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Marcos Macedo\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Marcos Macedo\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'
