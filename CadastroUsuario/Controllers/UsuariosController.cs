@@ -24,9 +24,11 @@ namespace CadastroUsuario.Controllers
         [HttpGet]
         public async Task<IEnumerable<Usuario>> Get()
         {
+            
             logger.LogInformation("Iniciando o metodo GET");
             IEnumerable<Usuario> usuarios = await usuarioRepository.Get();
             logger.LogInformation($"Finalizando o metodo GET com {usuarios.Count()} itens de retorno.");
+
             return usuarios;
         }
 
@@ -39,7 +41,7 @@ namespace CadastroUsuario.Controllers
             if (usuario == null)
             {
                 logger.LogWarning($"Finalizado o metodo GET({id}) como registro nao encontrado (404)");
-                return NotFound();
+                return NotFound("Usuário não encontrado!");
             }
             logger.LogInformation($"Finalizado o metodo GET({id}) com registro encontrado (200) - {usuario}");
             return Ok(usuario);
@@ -49,6 +51,12 @@ namespace CadastroUsuario.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> Create([FromBody] Usuario usuario)
         {
+
+            if (!(usuario.Id is null or ""))
+            {
+                return BadRequest("Id não pode ser implementado manualmente");
+            }
+
             logger.LogInformation("Iniciando o metodo POST");
             ActionResult<Usuario> result = await usuarioRepository.Create(usuario);
             logger.LogInformation("Finalizando o metodo POST");
@@ -63,22 +71,34 @@ namespace CadastroUsuario.Controllers
                 throw new ArgumentNullException("ID inválido");
             }
             logger.LogInformation($"Finalizado metodo POST com sucesso (200) - {result.Value}");
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Usuario>> Update(string id, [FromBody] Usuario usuario)
         {
             logger.LogInformation($"Iniciando o metodo PUT({id})");
-            if (usuario.Id.Equals(id))
+            if (id != usuario.Id)
             {
-
-                await usuarioRepository.Update(usuario);
-                logger.LogInformation($"Finalizado metodo PUT({id}) com sucesso - {usuario}");
-                return Ok(usuario);
+                logger.LogWarning($"Finalizado o metodo PUT({id}), com BadRequest.");
+                return BadRequest();
             }
-            logger.LogWarning("Finalizado o metodo PUT, mas retorno sem conteudo (204).");
-            return NoContent();
+
+            Usuario us = await usuarioRepository.GetById(id);
+
+            if (us == null)
+            {
+                logger.LogWarning($"Finalizado o metodo PUT({id}) como registro nao encontrado (404)");
+                return NotFound("Usuário não encontrado!");
+            }
+
+            us.FirstName = usuario.FirstName ?? us.FirstName;
+            us.Surname = usuario.Surname ?? us.Surname;
+            us.Age = usuario.Age ?? us.Age;
+
+            await usuarioRepository.Update(us);
+            logger.LogWarning($"Finalizado o metodo PUT, com sucesso (200) - {us}");
+            return Ok(us);
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> Delete(string id)
@@ -88,7 +108,7 @@ namespace CadastroUsuario.Controllers
             if (usuario == null)
             {
                 logger.LogWarning($"Finalizado o metodo DELETE({id}) como registro nao encontrado (404)");
-                return NotFound();
+                return NotFound("Usuário não encontrado!");
             }
             logger.LogInformation($"Finalizando o metodo DELETE({id})");
             await usuarioRepository.Delete(usuario);

@@ -30,7 +30,7 @@ namespace CadastroUsuario
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string mySqlConnection = "server=192.168.0.2;port=3306;database=apidb;user=root;password=mysql321";
+            string mySqlConnection = "server=172.18.0.2;port=3306;database=apidb;user=root;password=mysql321";
             services.AddLogging();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddDbContextPool<AppDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));

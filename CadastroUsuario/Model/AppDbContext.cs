@@ -14,5 +14,12 @@ namespace CadastroUsuario.Model
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>()
+                .Property(b => b.CreationDate)
+                .HasDefaultValue(DateTime.UtcNow);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace CadastroUsuario.Repositories
     {
         Task<IEnumerable<Usuario>> Get();
         Task<Usuario> Get(string id);
+        Task<Usuario> GetById(string id);
         Task<Usuario> Create(Usuario usuario);
         Task Update(Usuario usuario);
         Task Delete(Usuario usuario);

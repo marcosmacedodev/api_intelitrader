@@ -9,8 +9,8 @@ networks:
 
 services:
   mysql:
-    image: mysql
-    container_name: container_mysql
+    image: marcosmacedo89/mysql
+    container_name: mysql
     ports: 
       - "3307:3306"
     networks: 
@@ -24,7 +24,8 @@ services:
     build:
       context: .
       dockerfile: CadastroUsuario/Dockerfile
-    container_name: container_cadastrousuario
+    image: marcosmacedo89/cadastrousuario_api
+    container_name: cadastrousuario
     ports: 
       - "8000:80"
     networks:

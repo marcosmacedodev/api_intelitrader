@@ -45,5 +45,10 @@ namespace CadastroUsuario.Repositories
             context.Entry(usuario).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
+
+        public async Task<Usuario> GetById(string id)
+        {
+            return await context.Usuarios.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+        }
     }
 }

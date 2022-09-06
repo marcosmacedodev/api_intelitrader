@@ -19,8 +19,8 @@ namespace CadastroUsuario.Model
         [StringLength(16)]
         public string Surname { get; set; }
         [Required(ErrorMessage = "Campo de idade é obrigatório")]
-        public int Age { get; set; }
-        [Required, DataType(DataType.DateTime), DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int? Age { get; set; }
+        [Required, DataType(DataType.DateTime)]
         public DateTime CreationDate { get; set; }
     }
 }
