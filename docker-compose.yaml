@@ -5,6 +5,12 @@ volumes:
 
 networks:
     mysqlNetwork:
+        driver: bridge
+        ipam:
+          driver: default
+          config:
+            - subnet: 172.18.0.0/24
+              gateway: 172.18.0.1
     cadastrousuarioNetwork:
 
 services:
@@ -14,16 +20,18 @@ services:
     ports: 
       - "3307:3306"
     networks: 
-      - mysqlNetwork
+        mysqlNetwork:
+          ipv4_address: 172.18.0.2
     volumes: 
       - "cadastrousuariodb:/var/lib/mysql"
+      - "./apidb.sql:/docker-entrypoint-initdb.d/apidb.sql:ro"
     environment: 
       - MYSQL_ROOT_PASSWORD=mysql321
 
   api:
-    build:
-      context: .
-      dockerfile: CadastroUsuario/Dockerfile
+    #build:
+    #  context: .
+    #  dockerfile: CadastroUsuario/Dockerfile
     image: marcosmacedo89/cadastrousuario_api
     container_name: cadastrousuario
     ports: 
